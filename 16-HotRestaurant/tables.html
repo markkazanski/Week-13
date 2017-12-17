@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="jumbotron">
+      <h1><span class="glyphicon glyphicon-fire"></span>Hot Restaurant</h1>
+      <h3>Current Reservations and Waiting List</h3>
+      <hr>
+      <a href="/reservations"><button type="button" class="btn btn-lg btn-danger"><span class="glyphicon glyphicon-credit-card"></span> Make Reservation</button></a>
+      <a href="/"><button type="button" class="btn btn-lg btn-default"><span class="glyphicon glyphicon-home"></span></button></a>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">Current Reservations</h4>
+    </div>
+    <div class="panel-body" id="tableSection">
+      <div class="well" id="tableWell-01">
+        <h2><span class="label label-primary">1</span> | test</h2></div>
+      <div class="well" id="tableWell-11">
+        <h2><span class="label label-primary">2</span> | undefined</h2></div>
+    </div>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">Waiting List</h4>
+    </div>
+    <div class="panel-body" id="waitlistSection">
+    </div>
+  </div>
+
+
+
+  <p>Control Panel</p>
+<a href = "#">Clear Table</a> | <a href="/api/waitlist">API Wait List</a> | <a href="/api/tables">API Table Link</a>
+
+
+<script type="text/javascript">
+
+$.get("/api/tables", function(data){
+  
+  if(data){
+   // $("#tableWell-01").text(data[0].name);
+    //$("#tableWell-11").text(data[1].name);
+    console.log(data[0]);
+    $("#tableSection").empty();
+
+    for(var i=0; i<data.length; i++){
+      var h2 = `<h2><span class="label label-primary">${i+1}</span> | ${data[i].name}</h2>`; 
+      var paragraph = `<p>Phone: ${data[i].phone} Email: ${data[i].name} ID: ${data[i].uniqueID}</p>`;
+      $("#tableSection").append(`<div class="well">${h2} ${paragraph}</div>`);
+    }
+  }
+  else {
+   console.log("no data");
+  }
+
+});
+
+$.get("/api/waitlist", function(data){
+  
+  if(data){
+    console.log(data[0]);
+    $("#waitlistSection").empty();
+
+    for(var i=0; i<data.length; i++){
+      var h2 = `<h2><span class="label label-primary">${i+1}</span> | ${data[i].name}</h2>`; 
+      var paragraph = `<p>Phone: ${data[i].phone} Email: ${data[i].name} ID: ${data[i].uniqueID}</p>`;
+      $("#waitlistSection").append(`<div class="well">${h2} ${paragraph}</div>`);
+    }
+  }
+  else {
+   console.log("no data");
+  }
+
+});
+</script>
